@@ -31,8 +31,6 @@ const email = emailRef.current.value;
   };
   const onSubmitHandle = (e) => {
     e.preventDefault();
-    setRegisterError('')
-    setSucess('')
   
 
     const email = emailRef.current.value;
@@ -40,7 +38,9 @@ const email = emailRef.current.value;
  
 
      console.log(email,password)
-
+  setRegisterError('')
+    setSucess('')
+  
 
     signInWithEmailAndPassword(auth, email, password)
   .then((result) => {
@@ -48,7 +48,7 @@ const email = emailRef.current.value;
      if(!result.user.emailVerified)
      {
       console.log("please verify your email")
-      setRegisterError('please verify your email')
+      alert('please verify your email')
       return
 
      }

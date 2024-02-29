@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import React, { useRef } from "react";
 import auth from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
@@ -10,15 +10,29 @@ const Register = () => {
     e.preventDefault();
 
     console.log("submit working");
+         const name = e.target.name.value;
 
      const email = e.target.email.value;
 
     const password = e.target.password.value;
-    console.log(password)
+ 
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log("created Account");
+         
+        // update profile
+
+        updateProfile(result.user, {
+            displayName: name,
+             photoURL: "https://example.com/jane-q-user/profile.jpg"
+          }).then(() => {
+            console.log('profile created')
+          }).catch((error) => {
+            console.log(error.massege)
+          });
+
+
         sendEmailVerification(result.user)
         .then(()=>{
             alert("please check email to verify")
@@ -46,6 +60,16 @@ const Register = () => {
           <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <form onSubmit={handleSubmit} className="card-body">
               <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Username</span>
+                </label>
+                <input
+                  type="name"
+                  name="name"
+                  placeholder="Your Username"
+                  className="input input-bordered"
+                  required
+                />
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
